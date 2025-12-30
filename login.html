@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🔒Login</title>
+<link rel="icon" href="images/MEE.png" type="image/png" />
+<style>
+  /* Body styles with gradient background for a modern look */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  }
+
+  /* Title styles with custom font and shadow */
+  h1 {
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* Style inputs with rounded corners, shadows, and focus effects */
+  input {
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 250px;
+    font-size: 1em;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  /* Focus effect for inputs */
+  input:focus {
+    border-color: #66a6ff;
+    box-shadow: 0 0 8px rgba(102, 166, 255, 0.6);
+    outline: none;
+  }
+
+  /* Style button with gradient, shadow, rounded corners, and hover effect */
+  button {
+    padding: 12px 30px;
+    margin-top: 15px;
+    font-size: 1.1em;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  /* Hover effect for button */
+  button:hover {
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Message styles for errors or info */
+  #msg {
+    margin-top: 15px;
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 1em;
+  }
+</style>
+</head>
+<body>
+<h1>Login</h1>
+<input type="text" id="username" placeholder="Username" />
+<input type="password" id="password" placeholder="Password" />
+<button onclick="login()">Login</button>
+<div id="msg"></div>
+<script>
+  function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    if(username==='admin' && password==='admin') {
+      localStorage.setItem('role','admin');
+    } else if(username==='123' && password==='123') {
+      localStorage.setItem('role','viewer');
+    } else {
+      document.getElementById('msg').innerText='Invalid credentials';
+      return;
+    }
+    window.location.href='dutystatus.html';
+  }
+</script>
+</body>
+</html>

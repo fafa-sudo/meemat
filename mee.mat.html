@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>⚙️Class List and Group Management</title>
+<link rel="icon" href="images/mat.png" type="image/png" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border: 5px solid #69ff78;
+    margin: 0;
+   background: linear-gradient(180deg, #fcfcfc 0%, #635858 100%);
+  /* background-image: url('images/class_icon.png'); */
+  }
+  h1 {
+    background-color: #6633CC;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  input[type="password"] {
+    padding: 12px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 150px;
+    transition: all 0.3s;
+  }
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+  }
+  button {
+    padding: 14px 28px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+  }
+  button:hover {
+    background-color: #325c48;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.3);
+    transform: scale(1.05);
+  }
+  #addMemberForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  #messageBox {
+    margin-bottom: 15px;
+    padding: 12px;
+    display: none;
+    border-radius: 8px;
+    font-weight: bold;
+  }
+  #tableClassList {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  #tableClassList th,
+  #tableClassList td {
+    border: 1px solid #999;
+    padding: 10px;
+  }
+  #tableClassList thead {
+    background-color: #FFEB99;
+  }
+  .group-table {
+    margin-bottom: 25px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
+  }
+  .group-table h3 {
+    background-color: #ccc;
+    margin: 0 0 10px 0;
+    padding: 10px;
+    text-align: center;
+    cursor:pointer;
+  }
+  .group-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .group-table th,
+  .group-table td {
+    border: 1px solid #999;
+    padding: 8px;
+  }
+  #truncateGroupsBtn {
+    background-color: #e74c3c;
+    margin-top: 10px;
+  }
+  #truncateGroupsBtn:hover {
+    background-color: #62322d;
+    box-shadow: #241715;
+  }
+  #swapGroupSection {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+  }
+.styled-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white; /* Text color */
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  font-family: 'Arial', sans-serif;
+}
+
+.styled-link:hover {
+  background-color: #458ca0; /* Slightly darker on hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* More prominent shadow on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+  
+/* Style for links to look like buttons with effects */
+#navLinks a {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 10px 10px 0 0;
+  font-size: 1.2em;
+  font-family: Arial, sans-serif;
+  color: #fff; /* Text color */
+  background-color: #007BFF; /* Bootstrap blue */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect for links/buttons */
+#navLinks a:hover {
+  background-color: #0056b3; /* Darker shade */
+  box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+  transform: translateY(-2px);
+}
+
+/* Optional: Active or focus effect */
+#navLinks a:focus,
+#navLinks a:active {
+  outline: none;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+  transform: translateY(0);
+}
+/* Common styles for both buttons */
+button.editButton,
+button.deleteButton {
+  font-size: 1em;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+
+/* Specific styles for Edit Button */
+button.editButton {
+  background-color: #28a745; /* Green */
+  color: #fff;
+}
+button.editButton:hover {
+  background-color: #0768c3; /* Darker green */
+  box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+  transform: translateY(-2px);
+}
+button.editButton:focus {
+  outline: none;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* Specific styles for Delete Button */
+button.deleteButton {
+  background-color: #dc3545; /* Red */
+  color: #fff;
+}
+button.deleteButton:hover {
+  background-color: #793a40; /* Darker red */
+  box-shadow: 0 8px 12px rgba(40, 27, 27, 0.3);
+  transform: translateY(-2px);
+}
+button.deleteButton:focus {
+  outline: none;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* Style for the back button */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #6c757d; /* Gray background */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.back-button:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Style for the arrow symbol inside the button (optional) */
+.back-button .arrow {
+  font-size: 1.2em;
+  margin-right: 8px;
+}
+/* Style for the add button */
+.add-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background-color: #28a745; /* Green */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height:5px;
+}
+
+/* Hover effect */
+.add-button:hover {
+  background-color: #6197fb; /* Darker green on hover */
+  transform: translateY(-2px);
+}
+
+/* Style for the plus symbol inside the button (optional) */
+.add-button .plus {
+  font-size: 1.5em;
+  margin-right: 6px;
+}
+.logout {
+    padding: 12px 24px;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+  }
+
+  .logout:hover {
+    background-color: #68343a;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+    .nav {
+  background-image: url('images/mat.png');
+  background-size: cover;
+  background-position: center;
+}
+  
+</style>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<h1 id="loginTitle">Login</h1>
+<div id="messageBox"></div>
+
+<!-- Login Section -->
+<div id="loginDiv">
+  <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Username" />
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Password" />
+  </div>
+  <div style="display:flex; gap:10px; margin-bottom:10px;">
+    <button class="btn" id="loginButton">Login</button>
+    <button class="btn" id="logoutButton" style="display:none;">Logout</button>
+  </div>
+  <p id="loginMessage" style="color:red;"></p>
+</div>
+    <!-- Logout Button -->
+     <div class="nav">
+<div id="navLinks" style="display:none;">
+  <button class="logout" onclick="logout()">Logout</button>
+  <br>
+  <a href="dutystatus.html">Duty Status</a>
+  <a href="index.html">Teams OnDuty</a>
+</div><br>
+<button class="back-button" onclick="goBack()">
+  <span class="arrow">&larr;</span> Back
+</button>
+</div>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+<!-- Main Content (hidden until login) -->
+<div id="tablesDiv" style="display:none;">
+
+<h1>Class List and Groups</h1>
+<!-- Team Members Section -->
+
+<div id="classListContainer">
+  <!-- Swap Members by ID -->
+  <div id="swapSection" style="margin-bottom:15px;">
+    <h3>Swap Members by ID</h3>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <label for="swapId1">Member ID 1:</label>
+      <input type="text" id="swapId1" placeholder="Enter first member ID" />
+      <label for="swapId2">Member ID 2:</label>
+      <input type="text" id="swapId2" placeholder="Enter second member ID" />
+      <button class="btn" onclick="swapMembers()" title="Swap" style="font-size:1.1em;">🔃Swap</button>
+    </div>
+  </div>
+
+  <!-- Add Member Inputs -->
+  <div id="addMemberForm">
+    <input type="text" id="newRegNo" placeholder="Reg No" />
+    <input type="text" id="newFirstName" placeholder="First Name" />
+    <input type="text" id="newLastName" placeholder="Last Name" />
+    <input type="text" id="newRemark" placeholder="Remark" />
+    <button class="btn" onclick="addMember()"><span class="add-button">&plus;</span> Add</button>
+  </div>
+
+  <!-- Class Members Table -->
+  <table id="tableClassList">
+    <thead>
+      <tr>
+        <th>S/No</th>
+        <th>Reg No</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Remark</th>
+        <th class="idColumn">IDNO</th>
+        <th class="actionColumn">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="membersClassList"></tbody>
+  </table>
+</div>
+
+<h2 id="formGroupHeader">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form & Save Groups</h2>
+<div id="formGroupsContainer">
+  <div style="display:flex; gap:10px; align-items:center;">
+    <label for="numGroups"><strong  style="font-size: 16px;"></strong><mark> Number of Groups:</mark></strong></label>
+    <input type="number" id="numGroups" min="2" max="50" />
+    <button class="btn" id="generateSaveButton">⚡ Generate💾</button>
+  </div>
+  <div id="swapGroupSection" style="margin-top:10px; margin-bottom:10px; border:1px solid #ccc; padding:16px; border-radius:8px;">
+    <h3 class="swap">Swap Members in Groups by ID</h3>
+    <div style="display:flex; gap:10px; align-items:center; height: 14px;">
+      <label for="swapGroupId1" class="swap">Member ID 1:</label>
+      <input type="text" id="swapGroupId1" placeholder="Enter first member ID" />
+      <label for="swapGroupId2" class="swap">Member ID 2:</label>
+      <input type="text" id="swapGroupId2" placeholder="Enter second member ID" />
+      <button class="btn" id="swapInGroupBtn" title="Swap" style="font-size:1.1em;">🔄Swap</button>
+    </div>
+  </div>
+</div>
+
+<!-- Truncate All Groups Button -->
+<button id="truncateGroupsBtn" title="Truncate" style="font-size:1.1em;">🗑️ TRUNCATE</button>
+<h2 style="text-align: center; padding: 4px;">FORMED GROUPS</h2>
+<div id="groupsContainer"></div>
+<div id="storedGroups"></div>
+
+</div>
+
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDbm1ApKMcu9Q8HwJwKqROgBNndtr1Vl_8",
+    authDomain: "tstdb-8e676.firebaseapp.com",
+    projectId: "tstdb-8e676",
+    storageBucket: "tstdb-8e676.appspot.com",
+    messagingSenderId: "995214869280",
+    appId: "1:995214869280:web:58ce365c970bd53300cd45"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let currentUser = null;
+
+  // Array of colors to cycle through for groups
+  const groupColors = [
+    "#FFC0CB", // Pink
+    "#ADD8E6", // Light Blue
+    "#90EE90", // Light Green
+    "#FFFFE0", // Light Yellow
+    "#FFA07A", // Light Salmon
+    "#E0FFFF", // Light Cyan
+    "#D8BFD8", // Thistle
+    "#F5DEB3", // Wheat
+    "#FFB6C1", // Light Pink
+    "#87CEFA", // Light Sky Blue
+  ];
+
+  // Login event
+document.getElementById('loginButton').addEventListener('click', () => {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (username === 'admin' && password === 'admin') {
+    currentUser = 'admin';
+  } else if (username === '123' && password === '123') {
+    currentUser = 'viewer';
+  } else {
+    showMessage('Invalid login.', 'red');
+    return;
+  }
+  document.getElementById('loginDiv').style.display='none';
+  document.getElementById('tablesDiv').style.display='block';
+  document.getElementById('loginTitle').style.display='none';
+
+  toggleActionVisibility();
+  loadAllMembers();
+  loadStoredGroups();
+});
+
+// Logout event
+document.getElementById('logoutButton').addEventListener('click', () => {
+  currentUser = null;
+  document.getElementById('loginDiv').style.display='';
+  document.getElementById('tablesDiv').style.display='none';
+  document.getElementById('loginTitle').innerText='Login';
+  document.getElementById('loginTitle').style.display='block';
+
+  toggleActionVisibility();
+});
+
+// Role-based UI toggle
+const toggleActionVisibility = () => {
+  const isViewer = (currentUser==='viewer');
+  document.getElementById('tableClassList').style.display=isViewer?'none':'block';
+  document.querySelectorAll('.idColumn, .actionColumn').forEach(c => c.style.display=isViewer?'none':'table-cell');
+  document.querySelectorAll('#membersClassList tr').forEach(row => {
+    row.querySelectorAll('.idData, .actionColumn').forEach(c => c.style.display=isViewer?'none':'table-cell');
+  });
+  document.querySelectorAll('input,label,h3, .btn').forEach(el => {
+    el.style.display=isViewer?'none':'block';
+  });
+  document.querySelectorAll('.group-table, #formGroupHeader, #formGroupsContainer, #swapGroupSection, #truncateGroupsBtn').forEach(el => {
+    el.style.display=isViewer?'none':'block';
+  });
+};
+
+// Load members
+const getCollectionRef = () => db.collection('members').doc('Class').collection('members');
+
+const loadAllMembers = () => {
+  getCollectionRef().get().then(snapshot => {
+    const members = [];
+    snapshot.forEach(doc => members.push({ id: doc.id, ...doc.data() }));
+    renderMembers('membersClassList', members);
+  });
+};
+
+const renderMembers = (tbodyId, members) => {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML='';
+  members.forEach((m, i) => {
+    const row=document.createElement('tr');
+    row.setAttribute('data-id', m.id);
+    row.innerHTML= `
+      <td>${i+1}</td>
+      <td>${m.regno}</td>
+      <td>${m.firstName}</td>
+      <td>${m.lastName}</td>
+      <td>${m.remark}</td>
+      <td class="idData">${m.id}</td>
+      <td class="actionColumn">
+        <button class="editButton" data-id="${m.id}" title="Edit" style="font-size:1.0em;">✏️</button>
+        <button class="deleteButton" data-id="${m.id}" title="Delete" style="font-size:1.0em;">❌</button>
+      </td>`;
+    tbody.appendChild(row);
+  });
+  if(currentUser==='viewer') {
+    document.querySelectorAll('.editButton, .deleteButton, .idData').forEach(c => c.style.display='none');
+  }
+};
+
+// Add Member
+function addMember() {
+  if(currentUser==='viewer') return;
+  const regno = document.getElementById('newRegNo').value.trim();
+  const firstName = document.getElementById('newFirstName').value.trim();
+  const lastName = document.getElementById('newLastName').value.trim();
+  const remark = document.getElementById('newRemark').value.trim();
+  if (!regno || !firstName || !lastName) {
+    showMessage('Please fill all fields.', 'orange');
+    return;
+  }
+  getCollectionRef().add({ regno, firstName, lastName, remark }).then(() => {
+    document.getElementById('newRegNo').value='';
+    document.getElementById('newFirstName').value='';
+    document.getElementById('newLastName').value='';
+    document.getElementById('newRemark').value='';
+    loadAllMembers();
+    showMessage('Member added!', 'green');
+  }).catch(() => showMessage('Error adding member.', 'red'));
+}
+
+// Delete Member
+const deleteMember = (id) => {
+  if(currentUser!=='admin') return;
+  if(confirm('Delete this member?')){
+    getCollectionRef().doc(id).delete().then(() => {
+      loadAllMembers();
+      showMessage('Member deleted.', 'red');
+    });
+  }
+}
+
+// Edit Member
+const editMember = (id, regno, firstName, lastName, remark) => {
+  if(currentUser!=='admin') return;
+  getCollectionRef().doc(id).update({ regno, firstName, lastName, remark }).then(()=>{
+    loadAllMembers();
+    showMessage('Member updated.', 'blue');
+  });
+}
+
+// Event delegation for edit/delete
+document.getElementById('membersClassList').addEventListener('click', e => {
+  if(e.target.classList.contains('deleteButton')){
+    if(currentUser!=='admin') return;
+    const id=e.target.dataset.id;
+    deleteMember(id);
+  }
+  if(e.target.classList.contains('editButton')){
+    if(currentUser!=='admin') return;
+    const row=e.target.closest('tr');
+    const id=e.target.dataset.id;
+    const regno=row.children[1].innerText;
+    const firstName=row.children[2].innerText;
+    const lastName=row.children[3].innerText;
+    const remark=row.children[4].innerText;
+    const newRegNo=prompt('Reg No:', regno);
+    const newFirstName=prompt('First Name:', firstName);
+    const newLastName=prompt('Last Name:', lastName);
+    const newRemark=prompt('Remark:', remark);
+    if(newRegNo && newFirstName && newLastName){
+      editMember(id, newRegNo, newFirstName, newLastName, newRemark);
+    }
+  }
+});
+
+// Schedule functions
+// Removed setDateToday and calculateDayOfWeek
+// You can keep or remove related code if necessary
+
+// Swap Members in Class List
+function swapMembers() {
+  if(currentUser!=='admin'){ alert('Only admin can swap members'); return; }
+  const id1 = document.getElementById('swapId1').value.trim();
+  const id2 = document.getElementById('swapId2').value.trim();
+  if(!id1 || !id2){ alert('Enter both IDs'); return; }
+  Promise.all([findMemberById(id1), findMemberById(id2)]).then(([m1, m2]) => {
+    if(!m1 || !m2){ alert('ID not found'); return; }
+    return swapMembersInClassList(m1, m2);
+  }).then(() => {
+    loadAllMembers();
+    showMessage('Swapped successfully!', 'green');
+    document.getElementById('swapId1').value='';
+    document.getElementById('swapId2').value='';
+  }).catch(e=>alert('Error: '+e));
+}
+function findMemberById(id) {
+  return getCollectionRef().doc(id).get().then(doc => {
+    if(!doc.exists) return null;
+    return { id: doc.id, ...doc.data() };
+  });
+}
+function swapMembersInClassList(m1, m2) {
+  return Promise.all([
+    getCollectionRef().doc(m1.id).update({ regno: m2.regno, firstName: m2.firstName, lastName: m2.lastName, remark: m2.remark }),
+    getCollectionRef().doc(m2.id).update({ regno: m1.regno, firstName: m1.firstName, lastName: m1.lastName, remark: m2.remark })
+  ]);
+}
+
+// Swap Members in Groups
+document.getElementById('swapInGroupBtn').addEventListener('click', () => {
+  if(currentUser!=='admin'){ alert('Only admin can swap in groups'); return; }
+  const id1 = document.getElementById('swapGroupId1').value.trim();
+  const id2 = document.getElementById('swapGroupId2').value.trim();
+  if(!id1 || !id2){ alert('Enter both IDs'); return; }
+  Promise.all([findMemberAndGroup(id1), findMemberAndGroup(id2)]).then(results => {
+    const [m1,m2]=results;
+    if(!m1 || !m2){ alert('ID not found in groups'); return; }
+    return swapMembersBetweenGroups(m1,m2);
+  }).then(()=>{
+    loadStoredGroups();
+    showMessage('Swapped in groups', 'green');
+    document.getElementById('swapGroupId1').value='';
+    document.getElementById('swapGroupId2').value='';
+  }).catch(e=>alert('Error: '+e));
+});
+function findMemberAndGroup(mid) {
+  return new Promise((res, rej) => {
+    db.collection('formed_groups').get().then(snap => {
+      for(const doc of snap.docs){
+        const mems=doc.data().members || [];
+        const i=mems.findIndex(m=>m.id===mid);
+        if(i!==-1) { res({ groupId: doc.id, index: i, member: mems[i] }); return; }
+      }
+      res(null);
+    }).catch(rej);
+  });
+}
+function swapMembersBetweenGroups(m1, m2) {
+  if(m1.groupId===m2.groupId && m1.index===m2.index) return Promise.reject('Same member');
+  return Promise.all([
+    db.collection('formed_groups').doc(m1.groupId).get(),
+    db.collection('formed_groups').doc(m2.groupId).get()
+  ]).then(([d1, d2]) => {
+    const g1=d1.data(), g2=d2.data();
+    const temp=g1.members[m1.index];
+    g1.members[m1.index]=g2.members[m2.index];
+    g2.members[m2.index]=temp;
+    return Promise.all([
+      db.collection('formed_groups').doc(m1.groupId).update({ members: g1.members }),
+      db.collection('formed_groups').doc(m2.groupId).update({ members: g2.members })
+    ]);
+  });
+}
+
+// Load & display stored groups
+function loadStoredGroups() {
+  document.getElementById('storedGroups').innerHTML='';
+  db.collection('formed_groups').get().then(snap => {
+    snap.forEach(doc => {
+      const data=doc.data();
+      displayGroupTable(doc.id, data.name, data.members || []);
+    });
+  });
+}
+function displayGroupTable(groupId, groupName, members) {
+  const container = document.getElementById('storedGroups');
+  const div = document.createElement('div');
+  div.className='group-table';
+
+  // Determine index for color
+  const match=groupId.match(/group_(\d+)/);
+  const idx=match ? parseInt(match[1])-1 : 0;
+  // Assign color
+  div.style.backgroundColor=groupColors[idx % groupColors.length];
+
+  const title=document.createElement('h3');
+  title.innerText=groupName;
+  div.appendChild(title);
+
+  const table=document.createElement('table');
+  table.innerHTML=`
+    <thead>
+      <tr>
+        <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idData">ID</th><th class="actionColumn">Actions</th>
+      </tr>
+    </thead>`;
+  const tbody=document.createElement('tbody');
+
+  members.forEach((m,i) => {
+    const row = document.createElement('tr');
+    row.innerHTML= `
+      <td>${i+1}</td>
+      <td>${m.regno}</td>
+      <td>${m.firstName}</td>
+      <td>${m.lastName}</td>
+      <td>${m.remark}</td>
+      <td class="idData">${m.id}</td>
+      <td>
+        <button class="editButton" onclick="editGroupMember('${groupId}', ${i})">Edit</button>
+        <button class="deleteButton" onclick="deleteGroupMember('${groupId}', ${i})">Delete</button>
+      </td>`;
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+  div.appendChild(table);
+  container.appendChild(div);
+
+    if(currentUser==='viewer') {
+    document.querySelectorAll('.editButton, .deleteButton, .idData, .actionColumn').forEach(c => c.style.display='none');
+  }
+}
+function deleteGroupMember(groupId, index) {
+  if(currentUser!=='admin') return;
+  db.collection('formed_groups').doc(groupId).get().then(doc => {
+    if(!doc.exists){ alert('Group not found'); return; }
+    const data=doc.data();
+    data.members.splice(index,1);
+    return db.collection('formed_groups').doc(groupId).update({members:data.members});
+  }).then(()=>loadStoredGroups());
+}
+
+// New function: Edit a member within a group
+function editGroupMember(groupId, index) {
+  if(currentUser !== 'admin') {
+    alert('Only admin can edit group members.');
+    return;
+  }
+  db.collection('formed_groups').doc(groupId).get().then(doc => {
+    if (!doc.exists) {
+      alert('Group not found.');
+      return;
+    }
+    const groupData = doc.data();
+    const member = groupData.members[index];
+
+    const newRegNo = prompt('Reg No:', member.regno);
+    const newFirstName = prompt('First Name:', member.firstName);
+    const newLastName = prompt('Last Name:', member.lastName);
+    const newRemark = prompt('Remark:', member.remark);
+
+    if (newRegNo && newFirstName && newLastName) {
+      groupData.members[index] = {
+        ...member,
+        regno: newRegNo,
+        firstName: newFirstName,
+        lastName: newLastName,
+        remark: newRemark
+      };
+      db.collection('formed_groups').doc(groupId).update({ members: groupData.members })
+        .then(() => {
+          loadStoredGroups();
+          showMessage('Member updated in group.', 'blue');
+        });
+    }
+  });
+}
+
+// Generate & Save Groups
+document.getElementById('generateSaveButton').addEventListener('click', () => {
+  if(currentUser!=='admin'){ alert('Only admin'); return; }
+  const numGroups=parseInt(document.getElementById('numGroups').value);
+  if(isNaN(numGroups) || numGroups<2){ alert('Enter valid number'); return; }
+  getAllMembers().then(members => {
+    shuffleArray(members);
+    window.currentGroups = [];
+    for(let i=0; i<numGroups; i++) window.currentGroups.push([]);
+    for(let i=0; i<members.length; i++) {
+      window.currentGroups[i%numGroups].push(members[i]);
+    }
+    displayGroups(window.currentGroups);
+    // Save groups
+    window.currentGroups.forEach((group,idx)=>{
+      db.collection('formed_groups').doc(`group_${idx+1}`).set({
+        name:`Group ${idx+1}`,
+        members:group
+      });
+    });
+  });
+});
+function getAllMembers() {
+  return getCollectionRef().get().then(snap => {
+    const arr=[];
+    snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+    return arr;
+  });
+}
+function shuffleArray(arr) {
+  for(let i=arr.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+}
+function displayGroups(groups) {
+  document.getElementById('groupsContainer').innerHTML='';
+  groups.forEach((g,idx)=>{
+    const div=document.createElement('div');
+    div.className='group-table';
+    const title=document.createElement('h3');
+    title.innerText=`Group ${idx+1} (${g.length})`;
+    div.appendChild(title);
+    const table=document.createElement('table');
+    table.innerHTML=`
+      <thead>
+        <tr>
+          <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idData">ID</th><th>Actions</th>
+        </tr>
+      </thead>`;
+    const tbody=document.createElement('tbody');
+    g.forEach((m,i)=>{
+      const row=document.createElement('tr');
+      row.innerHTML=`
+        <td>${i+1}</td>
+        <td>${m.regno}</td>
+        <td>${m.firstName}</td>
+        <td>${m.lastName}</td>
+        <td>${m.remark}</td>
+        <td class="idData">${m.id}</td>
+        <td><button onclick="deleteGroupMember('group_${idx+1}', ${i})">Delete</button></td>`;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    div.appendChild(table);
+    document.getElementById('groupsContainer').appendChild(div);
+  });
+}
+
+// --------- Truncate All Groups ---------
+document.getElementById('truncateGroupsBtn').addEventListener('click', () => {
+  if(currentUser!=='admin'){ alert('Only admin can truncate groups'); return; }
+  if(!confirm('Are you sure you want to delete all formed groups? This action cannot be undone.')){
+    return;
+  }
+  // Delete all 'formed_groups' documents
+  db.collection('formed_groups').get().then(snap => {
+    const batch = db.batch();
+    snap.docs.forEach(doc => batch.delete(doc.ref));
+    return batch.commit();
+  }).then(() => {
+    document.getElementById('groupsContainer').innerHTML='';
+    showMessage('All groups have been deleted.', 'red');
+  }).catch(e => alert('Error deleting groups: '+e));
+});
+
+// Utility functions
+function showMessage(msg, color) {
+  const box = document.getElementById('messageBox');
+  box.innerHTML=msg;
+  box.style.backgroundColor= color==='red'?'#c0392b': color==='green'?'#27ae60':'#f39c12';
+  box.style.display='block';
+  setTimeout(()=>{ box.style.display='none'; }, 2000);
+}
+
+// Removed setDateToday and calculateDayOfWeek functions
+</script>
+<!-- JavaScript Function -->
+<script>
+function checkLogin() {
+  const role = localStorage.getItem('role'); // get role from localStorage
+  currentUser = role; // set global currentUser variable
+
+  const navLinks = document.getElementById('navLinks');
+  const loginDiv = document.getElementById('loginDiv');
+
+  if (role) {
+    // User is logged in
+    if (navLinks) navLinks.style.display = 'block';
+    if (loginDiv) loginDiv.style.display = 'none';
+
+    // Show main content
+    document.getElementById('tablesDiv').style.display='block';
+    document.getElementById('loginTitle').style.display='none';
+
+    // Role-based privilege UI adjustments
+    toggleActionVisibility(role);
+    loadAllMembers();
+    loadStoredGroups();
+  } else {
+    // Not logged in
+    if (navLinks) navLinks.style.display = 'none';
+    if (loginDiv) loginDiv.style.display='block';
+
+    document.getElementById('tablesDiv').style.display='none';
+    document.getElementById('loginTitle').style.display='';
+  }
+}
+
+    function logout() {
+      localStorage.removeItem('role');
+      window.location.href='login.html';
+        preventBack()
+    }
+    function preventBack() {
+  history.pushState(null, null, location.href);
+  window.onpopstate = function () {
+    history.go(1);
+  };
+}
+    window.onload = checkLogin;
+  </script>
+</body>
+</html>

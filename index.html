@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="theme-color" content="#007bff">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>⚙️CLASS GROUP and Duty Status</title>
+<link rel="icon" href="images/rp.png" type="image/png" />
+<link rel="manifest" href="/manifest.json">
+
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border: 5px solid #69ff78;
+    margin: 0;
+  }
+  h1 {
+    background-color: #6633CC;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  th, td {
+    border: 1px solid gray;
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #E6E6E6;
+  }
+
+  /* Define specific background colors for each table to improve UI */
+  #tableTEAM1 thead {
+    background-color: #FFEB99; /* Light Yellow */
+  }
+  #tableTEAM2 thead {
+    background-color: #CCFFCC; /* Light Green */
+  }
+  #tableTEAM3 thead {
+    background-color: #99CCFF; /* Light Blue */
+  }
+  #tableTEAM4 thead {
+    background-color: #FFB3B3; /* Light Red */
+  }
+  #tableTEAM5 thead {
+    background-color: #FFCC99; /* Light Orange */
+  }
+  #tableTEAM6 thead {
+    background-color: #D9B3FF; /* Light Purple */
+  }
+
+  /* Responsive container for form elements */
+  .form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  /* Labels styling */
+  label {
+    background-color: #F7DC6F;
+    padding: 8px;
+    border-radius: 10px;
+    color: black;
+    font-size: 1em;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  /* Increase input sizes and make them flexible for responsiveness */
+  input[type="text"], input[type="password"], input[type="date"] {
+    padding: 16px; /* larger size */
+    font-size: 1.4em;
+    flex: 1 1 auto; /* auto-fit */
+    min-width: 150px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  /* Buttons styling */
+  button {
+    padding: 15px 25px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    min-width: 120px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+  button:hover {
+    background-color: #45a049;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+    transform: scale(1.05);
+  }
+
+  /* Additional styles for duty status */
+  .teamInputContainer {
+    margin-bottom: 20px;
+  }
+  #messageBox {
+    margin-bottom: 10px;
+    padding: 10px;
+    display: none;
+    border-radius: 8px;
+  }
+  .duty-label {
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .on-duty {
+    background-color: #FFFF99;
+  }
+  .off-duty {
+    background-color: #b9a4c3;
+  }
+  #result {
+    background-color: #ADD8E6;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* Responsive adjustments for small screens */
+  @media(max-width: 600px) {
+    label, input, button {
+      flex: 1 1 100%;
+      min-width: unset;
+    }
+    .form-inline {
+      flex-direction: column;
+    }
+  }
+
+  /* Styling for swap section */
+  #swapSection {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+  }
+  #swapSection input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+    .styled-link {
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #4CAF50; /* Green background */
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  .styled-link:hover {
+    background-color: #51a4f3; /* Darker green on hover */
+    transform: scale(1.05);
+  }
+  /* Style for links to look like buttons with effects */
+#navLinks a {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 10px 10px 0 0;
+  font-size: 1.2em;
+  font-family: Arial, sans-serif;
+  color: #fff; /* Text color */
+  background-color: #007BFF; /* Bootstrap blue */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect for links/buttons */
+#navLinks a:hover {
+  background-color: #0056b3; /* Darker shade */
+  box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+  transform: translateY(-2px);
+}
+
+/* Optional: Active or focus effect */
+#navLinks a:focus,
+#navLinks a:active {
+  outline: none;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+  transform: translateY(0);
+}
+/* Common styles for both buttons */
+button.editButton,
+button.deleteButton {
+  font-size: 1em;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+
+/* Specific styles for Edit Button */
+button.editButton {
+  background-color: #28a745; /* Green */
+  color: #fff;
+}
+button.editButton:hover {
+  background-color: #0768c3; /* Darker green */
+  box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+  transform: translateY(-2px);
+}
+button.editButton:focus {
+  outline: none;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* Specific styles for Delete Button */
+button.deleteButton {
+  background-color: #dc3545; /* Red */
+  color: #fff;
+}
+button.deleteButton:hover {
+  background-color: #793a40; /* Darker red */
+  box-shadow: 0 8px 12px rgba(40, 27, 27, 0.3);
+  transform: translateY(-2px);
+}
+button.deleteButton:focus {
+  outline: none;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+}
+/* Make the container a flex container to align inputs horizontally */
+.teamInputContainer {
+  display: flex;
+  gap: 10px; /* Space between inputs */
+  align-items: center; /* Vertically center items if needed */
+}
+
+/* Styles for all inputs inside .teamInputContainer */
+.teamInputContainer input {
+  flex: 1; /* Optional: make inputs grow equally */
+  min-width: 100px; /* Prevent too small inputs */
+  padding: 10px 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 1em;
+  color: #333;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* Focus state for inputs */
+.teamInputContainer input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  background-color: #fff;
+}
+/* Make .form-inline display its children in a row (horizontally) */
+#swapSection .form-inline {
+  display: flex;
+  align-items: center; /* Vertically center items */
+  gap: 10px; /* Space between items; adjust as needed */
+}
+
+/* Optional: style labels for spacing and appearance */
+#swapSection .form-inline label {
+  white-space: nowrap; /* Keep label text on one line */
+  margin-right: 5px; /* Space between label and input */
+}
+
+/* Style for inputs for consistency */
+#swapSection .form-inline input {
+  padding: 8px 12px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+/* Style for the button */
+#swapSection .form-inline button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+/* Style for the back button */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #6c757d; /* Gray background */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.back-button:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Style for the arrow symbol inside the button (optional) */
+.back-button .arrow {
+  font-size: 1.2em;
+  margin-right: 8px;
+}
+/* Style for the add button */
+.add-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #28a745; /* Green */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.add-button:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: translateY(-2px);
+}
+
+/* Style for the plus symbol inside the button (optional) */
+.add-button .plus {
+  font-size: 1.2em;
+  margin-right: 8px;
+}
+  .duty{
+    background-color: #2b2b2b;
+    padding: 10px;
+    margin-top: 12px;
+    margin-bottom: 5px;
+  }
+  .logout {
+    padding: 12px 24px;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+  }
+
+  .logout:hover {
+    background-color: #a71d2a;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+    .nav {
+  background-image: url('images/class_icon.png');
+  background-size: cover; /* example size */
+  background-position: center;
+  background-repeat: no-repeat; /* optional, to prevent tiling */
+  padding: 10px;
+}
+.calcut {
+  background-image: url('images/rp.png');
+  background-size: 300px 150px; /* example size */
+  background-position: center;
+  background-repeat: no-repeat; /* optional, to prevent tiling */
+  padding: 20px;
+}
+</style>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<h1 id="loginTitle">Login</h1>
+
+<!-- Message Box -->
+<div id="messageBox"></div>
+
+<!-- Login Area -->
+<div id="loginDiv">
+  <div class="form-inline">
+    <label for="username">Username</label>
+    <input type="text" id="username" />
+  </div>
+  <div class="form-inline">
+    <label for="password">Password</label>
+    <input type="password" id="password" />
+  </div>
+  <div class="form-inline">
+    <button id="loginButton">Login</button>
+  </div>
+  <div class="form-inline">
+    <button id="logoutButton" style="display:none;">Logout</button>
+  </div>
+  <p id="loginMessage" style="color:red;"></p>
+</div>
+<div class="nav">
+    <!-- Logout Button -->
+<div id="navLinks" style="display:none;">
+  <button class="logout" onclick="logout()">Logout</button>
+  <br>
+  <a href="dutystatus.html">Duty Status</a>
+  <a href="mee.mat.html">Groups</a>
+</div><br>
+<button class="back-button" onclick="goBack()">
+  <span class="arrow">&larr;</span> Back
+</button>
+</div>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+<!-- Main Content (hidden until login) -->
+<div id="tablesDiv" style="display:none;">
+  <!-- Duty Schedule -->
+   <div class="calcut">
+  <h1>Duty Status</h1>
+  <div class="form-inline">
+    <label for="dateInput">Select a date:</label>
+    <input type="date" id="dateInput" />
+    <button onclick="calculateDayOfWeek()">Calculate</button>
+  </div>
+  </div>
+  <div id="result"></div>
+
+  <!-- Team Members Section -->
+  <h1>Team Members</h1>
+  
+  <!-- Swap Members Section -->
+  <div id="swapSection">
+    <h3>Swap Members by ID</h3>
+    <div class="form-inline">
+      <label for="swapId1">Member ID 1:</label>
+      <input type="text" id="swapId1" placeholder="Enter first member ID" />
+      <label for="swapId2">Member ID 2:</label>
+      <input type="text" id="swapId2" placeholder="Enter second member ID" />
+      <button onclick="swapMembers()">Swap</button>
+    </div>
+  </div>
+  
+  <!-- Generate all team blocks -->
+  <!-- TEAM1 -->
+  <h2>TEAM1</h2>
+  <div class="teamInputContainer" id="teamTEAM1InputContainer">
+    <div id="teamTEAM1InputFields" class="form-inline">
+      <label>Reg No</label>
+      <input id="teamTEAM1RegNo" placeholder="Reg No" />
+      <label>First Name</label>
+      <input id="teamTEAM1FirstName" placeholder="First Name" />
+      <label>Last Name</label>
+      <input id="teamTEAM1LastName" placeholder="Last Name" />
+      <label>Remark</label>
+      <input id="teamTEAM1Remark" placeholder="Remark" />
+    </div>
+    <button id="addTeamTEAM1Btn" class="add-button"><span class="plus">&plus;</span> Add</button>
+  </div>
+  <table id="tableTEAM1"><thead><tr>
+    <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idColumn">IDNO</th><th class="actionColumn">Actions</th>
+  </tr></thead><tbody id="membersTEAM1"></tbody></table>
+
+  <!-- TEAM2 -->
+  <h2>TEAM2</h2>
+  <div class="teamInputContainer" id="teamTEAM2InputContainer">
+    <div id="teamTEAM2InputFields" class="form-inline">
+      <label>Reg No</label>
+      <input id="teamTEAM2RegNo" placeholder="Reg No" />
+      <label>First Name</label>
+      <input id="teamTEAM2FirstName" placeholder="First Name" />
+      <label>Last Name</label>
+      <input id="teamTEAM2LastName" placeholder="Last Name" />
+      <label>Remark</label>
+      <input id="teamTEAM2Remark" placeholder="Remark" />
+    </div>
+    <button id="addTeamTEAM2Btn" class="add-button">&plus;Add</button>
+  </div>
+  <table id="tableTEAM2"><thead><tr>
+    <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idColumn">IDNO</th><th class="actionColumn">Actions</th>
+  </tr></thead><tbody id="membersTEAM2"></tbody></table>
+
+  <!-- TEAM3 -->
+  <h2>TEAM3</h2>
+  <div class="teamInputContainer" id="teamTEAM3InputContainer">
+    <div id="teamTEAM3InputFields" class="form-inline">
+      <label>Reg No</label>
+      <input id="teamTEAM3RegNo" placeholder="Reg No" />
+      <label>First Name</label>
+      <input id="teamTEAM3FirstName" placeholder="First Name" />
+      <label>Last Name</label>
+      <input id="teamTEAM3LastName" placeholder="Last Name" />
+      <label>Remark</label>
+      <input id="teamTEAM3Remark" placeholder="Remark" />
+    </div>
+    <button id="addTeamTEAM3Btn" class="add-button">&plus;Add</button>
+  </div>
+  <table id="tableTEAM3"><thead><tr>
+    <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idColumn">IDNO</th><th class="actionColumn">Actions</th>
+  </tr></thead><tbody id="membersTEAM3"></tbody></table>
+
+  <!-- TEAM4 -->
+  <h2>TEAM4</h2>
+  <div class="teamInputContainer" id="teamTEAM4InputContainer">
+    <div id="teamTEAM4InputFields" class="form-inline">
+      <label>Reg No</label>
+      <input id="teamTEAM4RegNo" placeholder="Reg No" />
+      <label>First Name</label>
+      <input id="teamTEAM4FirstName" placeholder="First Name" />
+      <label>Last Name</label>
+      <input id="teamTEAM4LastName" placeholder="Last Name" />
+      <label>Remark</label>
+      <input id="teamTEAM4Remark" placeholder="Remark" />
+    </div>
+    <button id="addTeamTEAM4Btn" class="add-button">&plus;Add</button>
+  </div>
+  <table id="tableTEAM4"><thead><tr>
+    <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idColumn">IDNO</th><th class="actionColumn">Actions</th>
+  </tr></thead><tbody id="membersTEAM4"></tbody></table>
+
+  <!-- TEAM5 -->
+  <h2>TEAM5</h2>
+  <div class="teamInputContainer" id="teamTEAM5InputContainer">
+    <div id="teamTEAM5InputFields" class="form-inline">
+      <label>Reg No</label>
+      <input id="teamTEAM5RegNo" placeholder="Reg No" />
+      <label>First Name</label>
+      <input id="teamTEAM5FirstName" placeholder="First Name" />
+      <label>Last Name</label>
+      <input id="teamTEAM5LastName" placeholder="Last Name" />
+      <label>Remark</label>
+      <input id="teamTEAM5Remark" placeholder="Remark" />
+    </div>
+    <button id="addTeamTEAM5Btn" class="add-button">&plus;Add</button>
+  </div>
+  <table id="tableTEAM5"><thead><tr>
+    <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idColumn">IDNO</th><th class="actionColumn">Actions</th>
+  </tr></thead><tbody id="membersTEAM5"></tbody></table>
+
+  <!-- TEAM6 -->
+  <h2>TEAM6</h2>
+  <div class="teamInputContainer" id="teamTEAM6InputContainer">
+    <div id="teamTEAM6InputFields" class="form-inline">
+      <label>Reg No</label>
+      <input id="teamTEAM6RegNo" placeholder="Reg No" />
+      <label>First Name</label>
+      <input id="teamTEAM6FirstName" placeholder="First Name" />
+      <label>Last Name</label>
+      <input id="teamTEAM6LastName" placeholder="Last Name" />
+      <label>Remark</label>
+      <input id="teamTEAM6Remark" placeholder="Remark" />
+    </div>
+    <button id="addTeamTEAM6Btn" class="add-button">&plus;Add</button>
+  </div>
+  <table id="tableTEAM6"><thead><tr>
+    <th>S/No</th><th>Reg No</th><th>First Name</th><th>Last Name</th><th>Remark</th><th class="idColumn">IDNO</th><th class="actionColumn">Actions</th>
+  </tr></thead><tbody id="membersTEAM6"></tbody></table>
+
+</div>
+
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDbm1ApKMcu9Q8HwJwKqROgBNndtr1Vl_8",
+    authDomain: "tstdb-8e676.firebaseapp.com",
+    projectId: "tstdb-8e676",
+    storageBucket: "tstdb-8e676.appspot.com",
+    messagingSenderId: "995214869280",
+    appId: "1:995214869280:web:58ce365c970bd53300cd45"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let currentUser = null;
+
+  const getGroupRef = (groupId) => db.collection('members').doc(groupId).collection('members');
+
+  // --- Login ---
+document.getElementById('loginButton').addEventListener('click', () => {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (username === 'admin' && password === 'admin') {
+    currentUser = 'admin';
+  } else if (username === '123' && password === '123') {
+    currentUser = 'viewer';
+  } else {
+    showMessage('Invalid login.', 'red');
+    return;
+  }
+  document.getElementById('loginDiv').style.display = 'none';
+  document.getElementById('tablesDiv').style.display = 'block';
+  document.getElementById('loginTitle').style.display = 'none';
+
+  toggleActionVisibility();
+  loadAllMembers();
+  setDateToday();
+  calculateDayOfWeek();
+});
+
+// --- Logout ---
+document.getElementById('logoutButton').addEventListener('click', () => {
+  currentUser = null;
+  document.getElementById('loginDiv').style.display = '';
+  document.getElementById('tablesDiv').style.display = 'none';
+  document.getElementById('loginTitle').innerText = 'Login';
+  document.getElementById('loginTitle').style.display = '';
+  toggleActionVisibility();
+});
+
+// --- Role UI Toggle ---
+const toggleActionVisibility = () => {
+  const isViewer = (currentUser === 'viewer');
+  
+  // Hide input fields if viewer
+  document.querySelectorAll('.teamInputContainer').forEach(div => {
+    div.style.display = isViewer ? 'none' : '';
+  });
+  document.getElementById('swapSection').style.display = isViewer ? 'none' : '';
+
+  // Hide "IDNO" columns and data if viewer
+  document.querySelectorAll('.idColumn').forEach(th => {
+    th.style.display = isViewer ? 'none' : '';
+  });
+  document.querySelectorAll('.idData').forEach(td => {
+    td.style.display = isViewer ? 'none' : '';
+  });
+
+  // Hide "Actions" columns
+  document.querySelectorAll('.actionColumn').forEach(td => {
+    td.style.display = isViewer ? 'none' : '';
+  });
+};
+
+// --- Load all members ---
+const loadAllMembers = () => {
+  ['TEAM1','TEAM2','TEAM3','TEAM4','TEAM5','TEAM6'].forEach(group => loadMembers(group));
+};
+
+const loadMembers = (groupId) => {
+  getGroupRef(groupId).get()
+    .then(snapshot => {
+      const members = [];
+      snapshot.forEach(doc => {
+        members.push({ id: doc.id, ...doc.data(), team: groupId });
+      });
+      renderMembers(`members${groupId}`, members);
+    });
+};
+
+const renderMembers = (tbodyId, members) => {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = '';
+  members.forEach((member, index) => {
+    const row = document.createElement('tr');
+    row.setAttribute('data-id', member.id || '');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${member.regno}</td>
+      <td>${member.firstName}</td>
+      <td>${member.lastName}</td>
+      <td>${member.remark}</td>
+      <td class="idData">${member.id || ''}</td> <!-- IDNO column with member ID -->
+      <td class="actionColumn">
+        <button class="editButton" data-id="${member.id}" data-team="${member.team}">Edit</button>
+        <button class="deleteButton" data-id="${member.id}" data-team="${member.team}">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+  if (currentUser === 'viewer') {
+    // Hide edit/delete buttons
+    tbody.querySelectorAll('.editButton, .deleteButton,.idData').forEach(btn => { btn.style.display='none'; });
+  }
+};
+
+// --- Add Member ---
+const addMember = (groupId) => {
+  const regno = document.getElementById(`team${groupId}RegNo`).value.trim();
+  const firstName = document.getElementById(`team${groupId}FirstName`).value.trim();
+  const lastName = document.getElementById(`team${groupId}LastName`).value.trim();
+  const remark = document.getElementById(`team${groupId}Remark`).value.trim();
+  if (!regno || !firstName || !lastName) {
+    showMessage('Please fill all fields.', 'orange');
+    return;
+  }
+  getGroupRef(groupId).add({ regno, firstName, lastName, remark, team: groupId }).then(() => {
+    // clear input fields
+    document.getElementById(`team${groupId}RegNo`).value = '';
+    document.getElementById(`team${groupId}FirstName`).value = '';
+    document.getElementById(`team${groupId}LastName`).value = '';
+    document.getElementById(`team${groupId}Remark`).value = '';
+    loadMembers(groupId);
+    showMessage('Member added successfully!', 'green');
+  }).catch(() => {
+    showMessage('Error adding member.', 'red');
+  });
+};
+
+// --- Delete Member ---
+const deleteMember = (groupId, memberId) => {
+  if (currentUser !== 'admin') return;
+  if (confirm(`Delete member from ${groupId}?`)) {
+    getGroupRef(groupId).doc(memberId).delete()
+      .then(() => {
+        loadMembers(groupId);
+        showMessage('Member deleted.', 'red');
+      })
+      .catch(() => {
+        showMessage('Error deleting member.', 'red');
+      });
+  }
+};
+
+// --- Edit Member ---
+const editMember = (groupId, memberId, regno, firstName, lastName, remark) => {
+  if (currentUser !== 'admin') return;
+  getGroupRef(groupId).doc(memberId).update({ regno, firstName, lastName, remark })
+    .then(() => {
+      loadMembers(groupId);
+      showMessage('Member updated.', 'blue');
+    })
+    .catch(() => {
+      showMessage('Error updating member.', 'red');
+    });
+};
+
+// --- Event Listeners for Add Buttons ---
+['TEAM1','TEAM2','TEAM3','TEAM4','TEAM5','TEAM6'].forEach(group => {
+  document.getElementById(`addTeam${group}Btn`).addEventListener('click', () => addMember(group));
+});
+
+// --- Delegate Edit/Delete Buttons ---
+document.getElementById('tablesDiv').addEventListener('click', (e) => {
+  if (e.target.classList.contains('deleteButton')) {
+    if (currentUser !== 'admin') return;
+    const group = e.target.dataset.team;
+    const id = e.target.dataset.id;
+    if (confirm(`Delete member from ${group}?`)) deleteMember(group, id);
+  }
+  if (e.target.classList.contains('editButton')) {
+    if (currentUser !== 'admin') return;
+    const group = e.target.dataset.team;
+    const id = e.target.dataset.id;
+    getGroupRef(group).doc(id).get().then(doc => {
+      if (doc.exists) {
+        const data = doc.data();
+        const newRegNo = prompt('Reg No:', data.regno);
+        const newFirstName = prompt('First Name:', data.firstName);
+        const newLastName = prompt('Last Name:', data.lastName);
+        const newRemark = prompt('Remark:', data.remark);
+        if (newRegNo && newFirstName && newLastName) {
+          editMember(group, id, newRegNo, newFirstName, newLastName, newRemark);
+        }
+      }
+    });
+  }
+});
+
+// --- Schedule functions ---
+const setDateToday = () => {
+  const today = new Date();
+  document.getElementById('dateInput').valueAsDate = today;
+  calculateDayOfWeek();
+};
+
+const dutyStartDate = new Date(2025, 10, 24);
+const teamsOrder = ['TEAM1','TEAM2','TEAM3','TEAM4','TEAM5','TEAM6'];
+const totalTeams = teamsOrder.length;
+
+const getWeekdayDiff = (startDate, endDate) => {
+  let count=0;
+  let current=new Date(startDate);
+  while(current<=endDate){
+    const d=current.getDay();
+    if(d!==0 && d!==6) count++;
+    current.setDate(current.getDate()+1);
+  }
+  return Math.max(0,count-1);
+};
+
+const calculateDayOfWeek = () => {
+  const dateStr = document.getElementById('dateInput').value;
+  const date=new Date(dateStr);
+  if (isNaN(date)) {
+    document.getElementById('result').innerText='Invalid date.';
+    return;
+  }
+  const dayName = date.toLocaleDateString(undefined, { weekday: 'long' });
+  const selectedDay = date.getDay();
+  if (selectedDay===0 || selectedDay===6) {
+    document.getElementById('result').innerHTML='Weekend - no duty';
+    return;
+  }
+  const diff = getWeekdayDiff(dutyStartDate, date);
+  const index=diff % totalTeams;
+  const teamOnDuty=teamsOrder[index];
+
+  const prevIdx = (index -1 + totalTeams) % totalTeams;
+  const nextIdx = (index +1) % totalTeams;
+  const prevTeam=teamsOrder[prevIdx];
+  const nextTeam=teamsOrder[nextIdx];
+
+  let html='';
+  teamsOrder.forEach(t => {
+    if(t===teamOnDuty){
+      html+=`<label class="duty-label on-duty">${t} is on duty</label><br>`;
+    } else {
+      html+=`<label class="duty-label off-duty">${t} is off duty</label><br>`;
+    }
+  });
+
+  const todayStr = new Date().toLocaleDateString();
+  document.getElementById('result').innerHTML=`
+    <p style="font-weight:bold;">Today’s Date: <span style="color:#0000FF;">&nbsp;${todayStr}&nbsp;</span></p>
+    <p style="font-weight:bold;">Selected date: <span style="color:#0000FF;">${date.toLocaleDateString()}</span> is on <span style="color:#FF0000;">${dayName}</span></p>
+    <br/>
+    <div class="duty">
+    <label style="background-color: #E0E9E8FF; padding: 8px; border-radius: 5px;">
+    <label style="background-color: #FFA07A; padding: 5px; border-radius: 5px;">Previous Team On Duty:<strong> <mark>&nbsp;${prevTeam}</mark></strong></label>
+    <br><br>
+    <label style="background-color: #9FDD6DF1; color:#040404FF; padding: 5px; border-radius: 5px;">Current Team On Duty: &nbsp;<strong><mark>&nbsp;${teamOnDuty}</mark></strong></label>
+    <br><br>
+    <label style="background-color: #D876E9FF; padding: 5px; border-radius: 5px;">Next Team On Duty: &nbsp;&nbsp;&nbsp;<strong><mark>&nbsp;${nextTeam}</mark></strong></label><br></label>
+    <br><br></div>${html}
+  `;
+};
+
+function showMessage(msg, color) {
+  const box=document.getElementById('messageBox');
+  box.innerHTML=msg;
+  box.style.backgroundColor=color==='red'?'#c0392b':color==='green'?'#27ae60':'#f39c12';
+  box.style.display='block';
+  setTimeout(()=>{box.style.display='none';},2000);
+}
+
+// --- Swap Members by ID ---
+const swapMembers = () => {
+  const id1 = document.getElementById('swapId1').value.trim();
+  const id2 = document.getElementById('swapId2').value.trim();
+
+  if (!id1 || !id2) {
+    alert('Please enter both member IDs.');
+    return;
+  }
+
+  // Find the members in all tables
+  const allPromises = [];
+  let foundMembers = {};
+
+  ['TEAM1','TEAM2','TEAM3','TEAM4','TEAM5','TEAM6'].forEach(group => {
+    const ref = getGroupRef(group);
+    // fetch both members
+    allPromises.push(
+      ref.doc(id1).get().then(doc => {
+        if (doc.exists) {
+          foundMembers[id1] = { ...doc.data(), id: doc.id, team: group };
+        }
+      }),
+      ref.doc(id2).get().then(doc => {
+        if (doc.exists) {
+          foundMembers[id2] = { ...doc.data(), id: doc.id, team: group };
+        }
+      })
+    );
+  });
+
+  Promise.all(allPromises).then(() => {
+    if (!foundMembers[id1] || !foundMembers[id2]) {
+      alert('One or both IDs not found.');
+      return;
+    }
+
+    // Swap data
+    const member1 = foundMembers[id1];
+    const member2 = foundMembers[id2];
+
+    const p1 = getGroupRef(member1.team).doc(member1.id).update({
+      regno: member2.regno,
+      firstName: member2.firstName,
+      lastName: member2.lastName,
+      remark: member2.remark
+    });
+
+    const p2 = getGroupRef(member2.team).doc(member2.id).update({
+      regno: member1.regno,
+      firstName: member1.firstName,
+      lastName: member1.lastName,
+      remark: member1.remark
+    });
+
+    Promise.all([p1, p2]).then(() => {
+      loadMembers(member1.team);
+      loadMembers(member2.team);
+      // Clear swap input fields
+      document.getElementById('swapId1').value = '';
+      document.getElementById('swapId2').value = '';
+      showMessage('2 members swapped', 'green');
+    }).catch(() => {
+      showMessage('Error swapping members.', 'red');
+    });
+  });
+};
+
+// Initialize on page load
+setDateToday();
+
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(function(error) {
+        console.log('Service Worker registration failed:', error);
+      });
+  });
+}
+</script>
+<script>
+function checkLogin() {
+  const role = localStorage.getItem('role'); // get role from localStorage
+  currentUser = role; // set global currentUser variable
+
+  const navLinks = document.getElementById('navLinks');
+  const loginDiv = document.getElementById('loginDiv');
+
+  if (role) {
+    // User is logged in
+    if (navLinks) navLinks.style.display = 'block';
+    if (loginDiv) loginDiv.style.display = 'none';
+
+    // Show main content
+    document.getElementById('tablesDiv').style.display='block';
+    document.getElementById('loginTitle').style.display='none';
+
+    // Role-based privilege UI adjustments
+    toggleActionVisibility(role);
+ loadAllMembers();
+  setDateToday();
+  calculateDayOfWeek();
+  } else {
+    // Not logged in
+    if (navLinks) navLinks.style.display = 'none';
+    if (loginDiv) loginDiv.style.display='block';
+
+    document.getElementById('tablesDiv').style.display='none';
+    document.getElementById('loginTitle').style.display='';
+  }
+}
+
+    function logout() {
+      localStorage.removeItem('role');
+      window.location.href='login.html';
+      preventBack()
+    }
+    function preventBack() {
+  history.pushState(null, null, location.href);
+  window.onpopstate = function () {
+    history.go(1);
+  };
+}
+
+    window.onload = checkLogin;
+  </script>
+
+</body>
+</html>

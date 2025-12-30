@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>⚙️Duty Status</title>
+<link rel="icon" href="images/MEE.png" type="image/png" />
+<!-- Include your styles here or in a linked CSS -->
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding:20px;
+  }
+    h1 {
+    background-color: #6633CC;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  button {
+    padding:10px 20px;
+    margin-top:20px;
+    cursor:pointer;
+  }
+  #messageBox {
+    margin-bottom: 10px;
+    padding: 10px;
+    display: none;
+    border-radius: 8px;
+  }
+  .duty-label {
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .on-duty {
+    background-color: #FFFF99;
+  }
+  .off-duty {
+    background-color: #b9a4c3;
+  }
+  #result {
+    background-color: #ADD8E6;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* Responsive adjustments for small screens */
+  @media(max-width: 600px) {
+    label, input, button {
+      flex: 1 1 100%;
+      min-width: unset;
+    }
+    .form-inline {
+      flex-direction: column;
+    }
+  }
+  #result {
+    margin-top:20px;
+    padding:10px;
+    background:#ADD8E6;
+    border-radius:8px;
+  }
+   a {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 1.2em;
+    color: #fff; /* Text color */
+    background-color: #007BFF; /* Button background color */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  a:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+      .logout {
+    padding: 12px 24px;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+  }
+
+  .logout:hover {
+    background-color: #a71d2a;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+  /* Style the date input with custom appearance, rounded edges, and shadow */
+  #dateInput {
+    padding: 12px 15px;
+    font-size: 2em;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    width: 250px;
+    outline: none;
+  }
+
+  /* Focus effect for date input */
+  #dateInput:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+  }
+
+  /* Style the button with gradient, shadow, rounded corners, and icon */
+  #calculate {
+    padding: 12px 20px;
+    margin-left: 10px;
+    font-size: 1.1em;
+    background: linear-gradient(45deg, #ff7e5f, #feb47b);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Hover effect for the button */
+  #calculate:hover {
+    background: linear-gradient(45deg, #986e4e, #cfc147);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+  }
+    /* Additional styles for duty status */
+  .teamInputContainer {
+    margin-bottom: 20px;
+  }
+  #messageBox {
+    margin-bottom: 10px;
+    padding: 10px;
+    display: none;
+    border-radius: 8px;
+  }
+  .duty{
+    background-color: #2b2b2b;
+    padding: 10px;
+    margin-top: 12px;
+    margin-bottom: 5px;
+  }
+  .nav {
+  background-image: url('images/MEE.png');
+  background-size: cover;
+  background-position: center;
+}
+.form-inline {
+  background-image: url('images/rp.png');
+  background-size: 300px 150px; /* example size */
+  background-position: center;
+  background-repeat: no-repeat; /* optional, to prevent tiling */
+  padding: 20px;
+}
+.select{
+  font-size: 26px;
+  font-weight: 700;
+}
+  /* Labels styling */
+  .form-inline label {
+    background-color: #F7DC6F;
+    padding: 8px;
+    border-radius: 10px;
+    color: black;
+    font-size: 1em;
+    min-width: 100px;
+    text-align: center;
+  }
+  /* Optional: Add an icon inside the button using before pseudo-element or inline span */
+</style>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="nav">
+  <!--logout button -->
+<button class="logout" onclick="logout()">Logout</button>
+<h1>Duty Status</h1>
+<br>
+<a href="index.html">Teams OnDuty</a>
+<a href="mee.mat.html">GROUPS</a>
+</div>
+
+<div class="form-inline" style="margin-top:20px;">
+  <label for="dateInput" class="select">Select a date:</label>
+<input type="date" id="dateInput" />
+<button id="calculate" onclick="calculateDayOfWeek()">📅 Calculate</button>
+</div>
+<div id="result"></div>
+
+<script>
+  // Firebase setup
+  const firebaseConfig = {
+    apiKey: "AIzaSyDbm1ApKMcu9Q8HwJwKqROgBNndtr1Vl_8",
+    authDomain: "tstdb-8e676.firebaseapp.com",
+    projectId: "tstdb-8e676",
+    storageBucket: "tstdb-8e676.appspot.com",
+    messagingSenderId: "995214869280",
+    appId: "1:995214869280:web:58ce365c970bd53300cd45"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  function logout() {
+    localStorage.removeItem('role');
+    window.location.href='login.html';
+  }
+// --- Schedule functions ---
+const setDateToday = () => {
+  const today = new Date();
+  document.getElementById('dateInput').valueAsDate = today;
+  calculateDayOfWeek();
+};
+
+const dutyStartDate = new Date(2025, 10, 24);
+const teamsOrder = ['TEAM1','TEAM2','TEAM3','TEAM4','TEAM5','TEAM6'];
+const totalTeams = teamsOrder.length;
+
+const getWeekdayDiff = (startDate, endDate) => {
+  let count=0;
+  let current=new Date(startDate);
+  while(current<=endDate){
+    const d=current.getDay();
+    if(d!==0 && d!==6) count++;
+    current.setDate(current.getDate()+1);
+  }
+  return Math.max(0,count-1);
+};
+
+const calculateDayOfWeek = () => {
+  const dateStr = document.getElementById('dateInput').value;
+  const date=new Date(dateStr);
+  if (isNaN(date)) {
+    document.getElementById('result').innerText='Invalid date.';
+    return;
+  }
+  const dayName = date.toLocaleDateString(undefined, { weekday: 'long' });
+  const selectedDay = date.getDay();
+  if (selectedDay===0 || selectedDay===6) {
+    document.getElementById('result').innerHTML='Weekend - no duty';
+    return;
+  }
+  const diff = getWeekdayDiff(dutyStartDate, date);
+  const index=diff % totalTeams;
+  const teamOnDuty=teamsOrder[index];
+
+  const prevIdx = (index -1 + totalTeams) % totalTeams;
+  const nextIdx = (index +1) % totalTeams;
+  const prevTeam=teamsOrder[prevIdx];
+  const nextTeam=teamsOrder[nextIdx];
+
+  let html='';
+  teamsOrder.forEach(t => {
+    if(t===teamOnDuty){
+      html+=`<label class="duty-label on-duty">${t} is on duty</label><br>`;
+    } else {
+      html+=`<label class="duty-label off-duty">${t} is off duty</label><br>`;
+    }
+  });
+
+  const todayStr = new Date().toLocaleDateString();
+  document.getElementById('result').innerHTML=`
+    <p style="font-weight:bold;">Today’s Date: <span style="color:#0000FF;">&nbsp;${todayStr}&nbsp;</span></p>
+    <p style="font-weight:bold;">Selected date: <span style="color:#0000FF;">${date.toLocaleDateString()}</span> is on <span style="color:#FF0000;">${dayName}</span></p>
+    <br/>
+    <div class="duty">
+    <label style="background-color: #E0E9E8FF; padding: 8px; border-radius: 5px;">
+    <label style="background-color: #FFA07A; padding: 5px; border-radius: 5px;">Previous Team On Duty:<strong> <mark>&nbsp;${prevTeam}</mark></strong></label>
+    <br><br>
+    <label style="background-color: #9FDD6DF1; color:#040404FF; padding: 5px; border-radius: 5px;">Current Team On Duty: &nbsp;<strong><mark>&nbsp;${teamOnDuty}</mark></strong></label>
+    <br><br>
+    <label style="background-color: #D876E9FF; padding: 5px; border-radius: 5px;">Next Team On Duty: &nbsp;&nbsp;&nbsp;<strong><mark>&nbsp;${nextTeam}</mark></strong></label><br></label>
+    <br><br></div>${html}
+  `;
+};
+
+// Initialize on page load
+setDateToday();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(function(error) {
+        console.log('Service Worker registration failed:', error);
+      });
+  });
+}
+</script>
+</body>
+</html>
